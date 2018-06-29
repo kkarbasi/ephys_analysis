@@ -28,11 +28,12 @@ def _read_header(fp):
     if magic_header != 'fhd':
         raise RuntimeError('FHD header is invalid')
     header = {};
-    header['major_version'] = struct.unpack('@B', bytes([read_bytes[4]]))[0]
-    header['minor_version'] = struct.unpack('@B', bytes([read_bytes[5]]))[0]
-    header['minor_minor_version'] = struct.unpack('@B', bytes([read_bytes[6]]))[0]
-    header['pointer_size'] = struct.unpack('@B', bytes([read_bytes[7]]))[0]
-    header['num_pointer_entries'] = struct.unpack('@B', bytes([read_bytes[8]]))[0]
+    if (sys.version_info > (3, 0)):
+        header['major_version'] = struct.unpack('@B', bytes([read_bytes[4]]))[0]
+        header['minor_version'] = struct.unpack('@B', bytes([read_bytes[5]]))[0]
+        header['minor_minor_version'] = struct.unpack('@B', bytes([read_bytes[6]]))[0]
+        header['pointer_size'] = struct.unpack('@B', bytes([read_bytes[7]]))[0]
+        header['num_pointer_entries'] = struct.unpack('@B', bytes([read_bytes[8]]))[0]
     return header
 
 def _read_group(fp, data={}):
